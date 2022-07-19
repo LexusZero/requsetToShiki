@@ -14,6 +14,5 @@ namespace RequestToShiki
         public string Description { get; set; }
         public string[] English { get; set; }
         public string[] Japanese { get; set; }
-
     }
 }

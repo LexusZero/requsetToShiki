@@ -4,10 +4,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace RequestToShiki
+namespace RequestToShiki.Test
 {
-     static public class Out
+    public class OutTests
     {
-
     }
 }

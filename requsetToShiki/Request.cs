@@ -22,27 +22,25 @@ namespace RequestToShiki
         {
             var studios = await client.GetFromJsonAsync<List<Studio>>(StudiosPath, serializeOptions);
             var foundStudio = studios.FirstOrDefault(stud => stud.Name == name || stud.filteredName == name);
+            if (foundStudio == null)
+            {
+                return null;
+            }
+
             var topAnimes = await client.GetFromJsonAsync<List<Anime>>(
                    $"/api/animes/?limit=5&studio={foundStudio.Id}&order=popularity",
                    serializeOptions);
             return new StudioWithTopAnime { Studio = foundStudio, TopAnimes = topAnimes };
-
-
         }
 
         public static async Task<Anime> AnimesByName(string name)
         {
             var animes = await client.GetFromJsonAsync<List<Anime>>($"/api/animes/?limit=3&search={name}", serializeOptions);
-
+            if (animes.Count == 0)
+            {
+                return null;
+            }
             return await client.GetFromJsonAsync<Anime>($"/api/animes/{animes[0].Id}", serializeOptions);
         }
-
-        public static async Task<List<Anime>> Top5AnimeByStudio(Studio studio)
-        {
-            return await client.GetFromJsonAsync<List<Anime>>(
-                    $"/api/animes/?limit=5&studio={studio.Id}&order=popularity",
-                    serializeOptions);
-        }
-
     }
 }

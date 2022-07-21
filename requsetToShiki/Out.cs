@@ -6,7 +6,8 @@ using System.Threading.Tasks;
 
 namespace RequestToShiki
 {
-    internal class Out
+     static public class Out
     {
+
     }
 }

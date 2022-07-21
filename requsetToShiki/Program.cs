@@ -21,29 +21,17 @@ namespace RequestToShiki
             try
             {
                 var name = Console.ReadLine();
-                var requestStudios = await client.GetStreamAsync("/api/studios");
-                var studios = await JsonSerializer.DeserializeAsync<List<Studio>>(requestStudios, serializeOptions);
-                var foundStudio = studios.FirstOrDefault(stud => stud.Name == name || stud.filteredName == name);
-                var found = foundStudio != null;
-                if (found)
+                if (await LookingStudioAsync(name))
                 {
-                    Console.WriteLine($"Название - {foundStudio.Name}");
-                    var top5 = await client.GetFromJsonAsync<List<Anime>>(
-                        $"/api/animes/?limit=5&studio={foundStudio.Id}&order=popularity",
-                        serializeOptions);
-                    foreach (var top in top5)
-                    {
-                        Console.WriteLine(top.Name);
-                    }
+                    Console.WriteLine();
                 }
                 else
                 {
 
 
-                    var response = await client.GetStreamAsync($"/api/animes/?limit=3&search={name}");
-                    var animes = await JsonSerializer.DeserializeAsync<List<Anime>>(response, serializeOptions);
-                    var secondResponse = await client.GetStreamAsync($"/api/animes/{animes[0].Id}");
-                    var anime = await JsonSerializer.DeserializeAsync<Anime>(secondResponse, serializeOptions);
+                    var animes = await client.GetFromJsonAsync<List<Anime>>($"/api/animes/?limit=3&search={name}", serializeOptions);
+                    var anime = await client.GetFromJsonAsync<Anime>($"/api/animes/{animes[0].Id}", serializeOptions);
+                    
                     Console.WriteLine($@"Id = {anime.Id}
 Название - {anime.Name}  
 Название на английском - {anime.English[0]}
@@ -58,7 +46,25 @@ namespace RequestToShiki
                 Console.WriteLine("Message :{0} ", e.Message);
             }
         }
-
+        static public async Task<bool> LookingStudioAsync(string name)
+        {
+            var studios = await client.GetFromJsonAsync<List<Studio>>("/api/studios", serializeOptions);
+            var foundStudio = studios.FirstOrDefault(stud => stud.Name == name || stud.filteredName == name);
+            var found = foundStudio != null;
+            if (found)
+            {
+                Console.WriteLine($"Название - {foundStudio.Name}");
+                var top5 = await client.GetFromJsonAsync<List<Anime>>(
+                    $"/api/animes/?limit=5&studio={foundStudio.Id}&order=popularity",
+                    serializeOptions);
+                foreach (var top in top5)
+                {
+                    Console.WriteLine(top.Name);
+                }
+                return found;
+            }
+            return false;
+        }
     }
 }
 

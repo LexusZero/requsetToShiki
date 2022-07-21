@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace RequestToShiki
 {
-    internal class Studio
+    public class Studio
 
     {
         public int Id { get; set; }

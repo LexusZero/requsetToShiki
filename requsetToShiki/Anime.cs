@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace RequestToShiki
 {
-    internal class Anime
+    public class Anime
     {
         public int Id { get; set; }
         public string Name { get; set; }

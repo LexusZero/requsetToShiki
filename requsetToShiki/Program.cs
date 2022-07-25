@@ -1,14 +1,13 @@
-namespace RequestToShiki
+namespace RequestToShiki;
+
+class Program
 {
-    class Program
+    static async Task Main()
     {
-        static async Task Main()
-        {
-            Request request = new Request();
-            View view = new View();
-            var controller = new LookupController(view, request);
-            await controller.LookupByName();
-        }
+        Request request = new Request();
+        View view = new View();
+        var controller = new LookupController(view, request);
+        await controller.LookupByName();
     }
 }
 

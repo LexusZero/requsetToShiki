@@ -1,21 +1,12 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
+namespace RequestToShiki;
 using System.Text.Json.Serialization;
-using System.Threading.Tasks;
 
-namespace RequestToShiki
+public class Studio
+
 {
-    public class Studio
-
-    {
-        public int Id { get; set; }
-        public string Name { get; set; }
-        [JsonPropertyName("filtered_name")]
-        public string filteredName { get; set; }
-
-    }
-
+    public int Id { get; set; }
+    public string Name { get; set; }
+    [JsonPropertyName("filtered_name")]
+    public string filteredName { get; set; }
 
 }

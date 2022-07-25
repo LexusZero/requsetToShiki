@@ -16,7 +16,7 @@ public class LookupController
         var studio = await this.request.StudioByName(name);
         if (studio != null)
         {
-            view.ShowStudio(studio);
+            this.view.ShowStudio(studio);
             return;
         }
         var anime = await this.request.AnimesByName(name);

@@ -5,13 +5,26 @@ public class LookupController
 {
     private IView view;
     private IRequest request;
-    LookupController(IView view, IRequest request)
+    public LookupController(IView view, IRequest request)
     {
         this.view = view;
         this.request = request;
     }
     public async Task LookupByName()
     {
-
+        var name = this.view.ReadName();
+        var studio = await this.request.StudioByName(name);
+        if (studio != null)
+        {
+            view.ShowStudio(studio);
+            return;
+        }
+        var anime = await this.request.AnimesByName(name);
+        if (anime != null)
+        {
+            this.view.ShowAnime(anime);
+            return;
+        }
+        this.view.NotFound();
     }
 }

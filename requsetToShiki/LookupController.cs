@@ -3,8 +3,8 @@ using System.Threading.Tasks;
 
 public class LookupController
 {
-    private IView view;
-    private IRequest request;
+    private readonly IView view;
+    private readonly IRequest request;
     public LookupController(IView view, IRequest request)
     {
         this.view = view;

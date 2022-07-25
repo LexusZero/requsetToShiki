@@ -6,8 +6,8 @@ public class RequestTest
     public async Task StudioByNameExists()
     {
         // arrange
-        string name = "Trigger";
-        Request request = new Request();
+        var name = "Trigger";
+        var request = new Request();
         // act
         var result = await request.StudioByName(name);
         // assert
@@ -18,8 +18,8 @@ public class RequestTest
     public async Task StudioByNameDoesntExists()
     {
         // arrange
-        string name = "ASDSDSDF";
-        Request request = new Request();
+        var name = "ASDSDSDF";
+        var request = new Request();
         // act
         var result = await request.StudioByName(name);
         // assert
@@ -30,8 +30,8 @@ public class RequestTest
     public async Task AnimesByNameExist()
     {
         // arrange
-        string name = "Kill la Kill And Something";
-        Request request = new Request();
+        var name = "Kill la Kill And Something";
+        var request = new Request();
         // act
         var result = await request.AnimesByName(name);
         // assert
@@ -41,8 +41,8 @@ public class RequestTest
     public async Task AnimesByNameNotExist()
     {
         // arrange
-        string name = "Asdasd";
-        Request request = new Request();
+        var name = "Asdasd";
+        var request = new Request();
         // act
         var result = await request.AnimesByName(name);
         // assert

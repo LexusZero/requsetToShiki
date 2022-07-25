@@ -1,11 +1,11 @@
 namespace RequestToShiki;
 
-class Program
+internal class Program
 {
-    static async Task Main()
+    private static async Task Main()
     {
-        Request request = new Request();
-        View view = new View();
+        var request = new Request();
+        var view = new View();
         var controller = new LookupController(view, request);
         await controller.LookupByName();
     }

@@ -5,9 +5,14 @@ VisualStudioVersion = 17.2.32630.192
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "RequestToShiki", "requsetToShiki\RequestToShiki.csproj", "{F78EC0B0-6D04-4467-8EF7-120D12CF117D}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RequestToShiki.Test", "RequestToShiki.Test\RequestToShiki.Test.csproj", "{081558AD-B5A7-4EBA-8D75-F794C0FC8FDF}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "RequestToShiki.Test", "RequestToShiki.Test\RequestToShiki.Test.csproj", "{081558AD-B5A7-4EBA-8D75-F794C0FC8FDF}"
 	ProjectSection(ProjectDependencies) = postProject
 		{F78EC0B0-6D04-4467-8EF7-120D12CF117D} = {F78EC0B0-6D04-4467-8EF7-120D12CF117D}
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{66ADEA76-DEE2-42C7-90D1-6B6A2DE720FB}"
+	ProjectSection(SolutionItems) = preProject
+		.editorconfig = .editorconfig
 	EndProjectSection
 EndProject
 Global

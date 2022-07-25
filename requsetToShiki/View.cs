@@ -1,14 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
 namespace RequestToShiki
 {
-     static public class View
+    public class View : IView
     {
-        static public void ShowStudio(StudioWithTopAnime studioWithTopAnime)
+        public void ShowStudio(StudioWithTopAnime studioWithTopAnime)
         {
             Console.WriteLine($"Название - {studioWithTopAnime.Studio.Name}");
             int count = 0;
@@ -19,7 +13,7 @@ namespace RequestToShiki
                 Console.WriteLine($"Аниме номер {count} " + anime.Name);
             }
         }
-        static public void ShowAnime(Anime anime)
+        public void ShowAnime(Anime anime)
         {
             Console.WriteLine($@"Id = {anime.Id}
 Название - {anime.Name}  
@@ -28,11 +22,11 @@ namespace RequestToShiki
 Описание - {anime.Description}
                     ");
         }
-        public static string ReadName()
+        public string ReadName()
         {
             return Console.ReadLine();
         }
-        public static void NotFound()
+        public void NotFound()
         {
             Console.WriteLine("Этого аниме или этой студии не существует");
         }

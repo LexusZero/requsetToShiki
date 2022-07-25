@@ -1,29 +1,26 @@
-﻿using System.Net.Http.Headers;
-using System.Net.Http.Json;
-using System.Text.Json;
-
 namespace RequestToShiki
 {
     class Program
     {
         static async Task Main()
         {
-            var name = View.ReadName();
-            var studio = await Request.StudioByName(name);
+            Request request = new Request();
+            View view = new View();
+            var name = view.ReadName();
+            var studio = await request.StudioByName(name);
             if (studio != null)
             {
-                View.ShowStudio(studio);
+                view.ShowStudio(studio);
                 return;
             }
-            var anime = await Request.AnimesByName(name);
+            var anime = await request.AnimesByName(name);
             if (anime != null)
             {
-                View.ShowAnime(anime);
+                view.ShowAnime(anime);
                 return;
             }
-            View.NotFound();
+            view.NotFound();
         }
-        
     }
 }
 

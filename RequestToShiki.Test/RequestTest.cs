@@ -7,7 +7,7 @@ public class RequestTest
     {
         // arrange
         var name = "Trigger";
-        var request = new Request();
+        var request = new ShikimoriRequest();
         // act
         var result = await request.StudioByName(name);
         // assert
@@ -19,7 +19,7 @@ public class RequestTest
     {
         // arrange
         var name = "ASDSDSDF";
-        var request = new Request();
+        var request = new ShikimoriRequest();
         // act
         var result = await request.StudioByName(name);
         // assert
@@ -31,7 +31,7 @@ public class RequestTest
     {
         // arrange
         var name = "Kill la Kill And Something";
-        var request = new Request();
+        var request = new ShikimoriRequest();
         // act
         var result = await request.AnimesByName(name);
         // assert
@@ -42,7 +42,7 @@ public class RequestTest
     {
         // arrange
         var name = "Asdasd";
-        var request = new Request();
+        var request = new ShikimoriRequest();
         // act
         var result = await request.AnimesByName(name);
         // assert

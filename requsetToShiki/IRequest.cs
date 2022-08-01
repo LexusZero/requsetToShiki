@@ -1,7 +1,4 @@
-namespace RequestToShiki;
-
-using System.Threading.Tasks;
-
+﻿namespace RequestToShiki;
 public interface IRequest
 {
     Task<Anime> AnimesByName(string name);

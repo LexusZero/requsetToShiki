@@ -1,10 +1,11 @@
-namespace RequestToShiki;
-public class Anime
+﻿namespace RequestToShiki
 {
-    public int Id { get; set; }
-    public string Name { get; set; }
-    public string Russian { get; set; }
-    public string Description { get; set; }
-    public string[] English { get; set; }
-    public string[] Japanese { get; set; }
+    public class Anime
+    {
+        public string Name { get; set; }
+        public string Description { get; set; }
+        public string EnglishName { get; set; }
+        public string JapaneseName { get; set; }
+
+    }
 }

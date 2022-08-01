@@ -63,12 +63,13 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+            this.AutoScroll = true;
             this.ClientSize = new System.Drawing.Size(367, 324);
             this.Controls.Add(this.input);
             this.Controls.Add(this.output);
             this.Controls.Add(this.lookupButton);
             this.Name = "LookupWindow";
-            this.Text = "Form1";
+            this.Text = "LookupWindow";
             this.Load += new System.EventHandler(this.Form1_Load);
             this.ResumeLayout(false);
             this.PerformLayout();

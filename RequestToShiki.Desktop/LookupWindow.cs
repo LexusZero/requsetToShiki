@@ -19,10 +19,9 @@ public partial class LookupWindow : Form, IView
 
     public void ShowAnime(Anime anime)
     {
-        this.output.Text = $@"Id = {anime.Id}
-Название - {anime.Name}  
-Название на английском - {anime.English[0]}
-Название на японском - {anime.Japanese[0]}
+        this.output.Text = $@"Название - {anime.Name} 
+Название на английском - {anime.EnglishName}
+Название на японском - {anime.JapaneseName}
 Описание - {anime.Description}
                     ";
 

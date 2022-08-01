@@ -1,3 +1,5 @@
+using RequestToShiki.ShikimoriAPI;
+
 namespace RequestToShiki;
 
 public class View : IView
@@ -13,7 +15,7 @@ public class View : IView
             Console.WriteLine($"Аниме номер {count} " + anime.Name);
         }
     }
-    public void ShowAnime(Anime anime) => Console.WriteLine($@"Id = {anime.Id}
+    public void ShowAnime(ShikimoriAnime anime) => Console.WriteLine($@"Id = {anime.Id}
 Название - {anime.Name}  
 Название на английском - {anime.English[0]}
 Название на японском - {anime.Japanese[0]}

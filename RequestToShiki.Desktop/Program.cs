@@ -1,4 +1,7 @@
-﻿namespace RequestToShiki.Desktop
+﻿using RequestToShiki.ShikimoriAPI;
+
+namespace RequestToShiki.Desktop
+
 {
     internal static class Program
     {
@@ -9,7 +12,7 @@
         private static void Main()
         {
             ApplicationConfiguration.Initialize();
-            var request = new Request();
+            var request = new ShikimoriRequest();
             var view = new LookupWindow();
             var controller = new LookupController(view, request);
             view.LookupTriggered += async (sender, args) => await controller.LookupByName();

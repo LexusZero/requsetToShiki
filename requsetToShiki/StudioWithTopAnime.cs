@@ -1,4 +1,4 @@
-namespace RequestToShiki;
+﻿namespace RequestToShiki;
 
 public class StudioWithTopAnime
 {

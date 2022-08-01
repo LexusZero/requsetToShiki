@@ -1,12 +1,7 @@
-namespace RequestToShiki;
-using System.Text.Json.Serialization;
-
-public class Studio
-
+﻿namespace RequestToShiki
 {
-    public int Id { get; set; }
-    public string Name { get; set; }
-    [JsonPropertyName("filtered_name")]
-    public string filteredName { get; set; }
-
+    public class Studio
+    {
+        public string Name { get; set; }
+    }
 }

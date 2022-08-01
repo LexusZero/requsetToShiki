@@ -1,6 +1,4 @@
-using RequestToShiki.ShikimoriAPI;
-
-namespace RequestToShiki;
+﻿namespace RequestToShiki;
 
 public class View : IView
 {
@@ -15,12 +13,10 @@ public class View : IView
             Console.WriteLine($"Аниме номер {count} " + anime.Name);
         }
     }
-    public void ShowAnime(ShikimoriAnime anime) => Console.WriteLine($@"Id = {anime.Id}
-Название - {anime.Name}  
-Название на английском - {anime.English[0]}
-Название на японском - {anime.Japanese[0]}
-Описание - {anime.Description}
-                    ");
+    public void ShowAnime(Anime anime) => Console.WriteLine($@"Название - {anime.Name}  
+Название на английском - {anime.EnglishName}
+Название на японском - {anime.JapaneseName}
+Описание - {anime.Description}");
     public string ReadName() => Console.ReadLine();
     public void NotFound() => Console.WriteLine("Этого аниме или этой студии не существует");
 }

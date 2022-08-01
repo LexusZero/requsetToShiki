@@ -1,3 +1,5 @@
+﻿using RequestToShiki.ShikimoriAPI;
+
 namespace RequestToShiki.Test;
 
 public class RequestTest

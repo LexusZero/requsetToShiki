@@ -27,12 +27,7 @@ public class ShikimoriRequest : IRequest
                $"/api/animes/?limit=5&studio={foundStudio.Id}&order=popularity",
                this.serializeOptions);
 
-        List<Anime> topAnimes = new();
-        foreach (var animeShiki in topAnimesShiki)
-        {
-            var anime = ConvertToAnime(animeShiki);
-            topAnimes.Add(anime);
-        }
+        var topAnimes = topAnimesShiki.Select(ConvertToAnime).ToList();
 
         return new StudioWithTopAnime { Studio = studio, TopAnimes = topAnimes };
     }

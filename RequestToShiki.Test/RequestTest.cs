@@ -31,7 +31,9 @@ public class RequestTest
         Assert.Null(result);
     }
 
-    [Fact]
+    [Theory]
+    [InlineData("Kill la Kill")]
+    [InlineData("sword")]
     public async Task AnimesByNameExist()
     {
         // arrange
@@ -39,7 +41,7 @@ public class RequestTest
         // act
         var result = await this.request.AnimesByName(name);
         // assert
-        Assert.Equal("Kill la Kill", result.Name);
+        Assert.NotNull(result);
     }
     [Fact]
     public async Task AnimesByNameNotExist()

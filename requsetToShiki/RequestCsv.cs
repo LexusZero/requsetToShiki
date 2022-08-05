@@ -35,51 +35,58 @@ namespace RequestToShiki
             }
             var studio = new Studio()
             {
-                Name = foundStudio.StudioName,
+                Name = foundStudio[0].StudioName,
             };
-            var records = await GetFullStorageDatas(Path);
-            var topAnimesCsv = GetTopAnimesByStudio(records, foundStudio.StudioName);
+            var topAnimesCsv = foundStudio;
             var topAnimes = topAnimesCsv.Select(ConvertToAnime).ToList();
             return new StudioWithTopAnime { Studio = studio, TopAnimes = topAnimes };
-
         }
         public async Task<StorageData> GetRecordByName(string requestPath, string name)
         {
-
             var record = await this.client.GetStreamAsync(requestPath);
             using var streamReader = new StreamReader(record);
             using var csvReader = new CsvReader(streamReader, CultureInfo.InvariantCulture);
             var records = csvReader.GetRecords<StorageData>();
             var foundAnime = records.FirstOrDefault(record => record.Name.Contains(
                 name, StringComparison.OrdinalIgnoreCase));
-
             return foundAnime;
         }
-        public async Task<StorageData> GetRecordByStudioName(string requestPath, string name)
+        public async Task<List<StorageData>> GetRecordByStudioName(string requestPath, string name)
         {
-
             var record = await this.client.GetStreamAsync(requestPath);
             using var streamReader = new StreamReader(record);
             using var csvReader = new CsvReader(streamReader, CultureInfo.InvariantCulture);
             var records = csvReader.GetRecords<StorageData>();
-            var foundStudio = records.FirstOrDefault(record => record.StudioName.Contains(
-                name, StringComparison.OrdinalIgnoreCase));
-            if (foundStudio != null)
+            var storageDatas = new List<StorageData>();
+            foreach (var rec in records)
             {
-                return foundStudio;
+                if (rec.StudioName.Contains(name, StringComparison.OrdinalIgnoreCase))
+                {
+                    storageDatas.Add(rec);
+                }
             }
+            if (storageDatas.Count != 0)
+            {
+                return storageDatas;
+            }
+
             return null;
         }
+
         public List<StorageData> GetTopAnimesByStudio(IEnumerable<StorageData> storageDatas, string name)
         {
             var animeList = new List<StorageData>();
+
             foreach (var storageData in storageDatas)
             {
+
                 if (storageData.StudioName == name)
                 {
                     animeList.Add(storageData);
                 }
+
             }
+
             return animeList;
         }
 
@@ -95,7 +102,6 @@ namespace RequestToShiki
         {
             Name = storageData.Name,
             Description = storageData.Description
-
         };
     }
 

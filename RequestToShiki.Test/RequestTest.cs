@@ -1,17 +1,21 @@
-﻿using RequestToShiki.ShikimoriAPI;
-
-namespace RequestToShiki.Test;
+﻿namespace RequestToShiki.Test;
 
 public class RequestTest
 {
+    private readonly IRequest request;
+    public RequestTest()
+    {
+        this.request = new GistCsvRequest();
+
+    }
+
     [Fact]
     public async Task StudioByNameExists()
     {
         // arrange
         var name = "Trigger";
-        var request = new ShikimoriRequest();
         // act
-        var result = await request.StudioByName(name);
+        var result = await this.request.StudioByName(name);
         // assert
         Assert.Equal(name, result.Studio.Name);
     }
@@ -21,9 +25,8 @@ public class RequestTest
     {
         // arrange
         var name = "ASDSDSDF";
-        var request = new ShikimoriRequest();
         // act
-        var result = await request.StudioByName(name);
+        var result = await this.request.StudioByName(name);
         // assert
         Assert.Null(result);
     }
@@ -32,10 +35,9 @@ public class RequestTest
     public async Task AnimesByNameExist()
     {
         // arrange
-        var name = "Kill la Kill And Something";
-        var request = new ShikimoriRequest();
+        var name = "Kill la Kill";
         // act
-        var result = await request.AnimesByName(name);
+        var result = await this.request.AnimesByName(name);
         // assert
         Assert.Equal("Kill la Kill", result.Name);
     }
@@ -44,9 +46,8 @@ public class RequestTest
     {
         // arrange
         var name = "Asdasd";
-        var request = new ShikimoriRequest();
         // act
-        var result = await request.AnimesByName(name);
+        var result = await this.request.AnimesByName(name);
         // assert
         Assert.Null(result);
     }

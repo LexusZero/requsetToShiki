@@ -26,9 +26,22 @@ namespace RequestToShiki
             return anime;
 
         }
-        public Task<StudioWithTopAnime> StudioByName(string name)
+        public async Task<StudioWithTopAnime> StudioByName(string name)
         {
-            throw new NotImplementedException();
+            var foundStudio = await GetRecordByStudioName(Path, name);
+            if (foundStudio == null)
+            {
+                return null;
+            }
+            var studio = new Studio()
+            {
+                Name = foundStudio.StudioName,
+            };
+            var records = await GetFullStorageDatas(Path);
+            var topAnimesCsv = GetTopAnimesByStudio(records, foundStudio.StudioName);
+            var topAnimes = topAnimesCsv.Select(ConvertToAnime).ToList();
+            return new StudioWithTopAnime { Studio = studio, TopAnimes = topAnimes };
+
         }
         public async Task<StorageData> GetRecordByName(string requestPath, string name)
         {
@@ -36,13 +49,54 @@ namespace RequestToShiki
             var record = await this.client.GetStreamAsync(requestPath);
             using var streamReader = new StreamReader(record);
             using var csvReader = new CsvReader(streamReader, CultureInfo.InvariantCulture);
-            var animeRecords = csvReader.GetRecords<StorageData>();
-            var foundAnime = animeRecords.FirstOrDefault(anim => anim.Name.Contains(
-                name, StringComparison.InvariantCultureIgnoreCase));
+            var records = csvReader.GetRecords<StorageData>();
+            var foundAnime = records.FirstOrDefault(record => record.Name.Contains(
+                name, StringComparison.OrdinalIgnoreCase));
+
             return foundAnime;
-
-
         }
+        public async Task<StorageData> GetRecordByStudioName(string requestPath, string name)
+        {
+
+            var record = await this.client.GetStreamAsync(requestPath);
+            using var streamReader = new StreamReader(record);
+            using var csvReader = new CsvReader(streamReader, CultureInfo.InvariantCulture);
+            var records = csvReader.GetRecords<StorageData>();
+            var foundStudio = records.FirstOrDefault(record => record.StudioName.Contains(
+                name, StringComparison.OrdinalIgnoreCase));
+            if (foundStudio != null)
+            {
+                return foundStudio;
+            }
+            return null;
+        }
+        public List<StorageData> GetTopAnimesByStudio(IEnumerable<StorageData> storageDatas, string name)
+        {
+            var animeList = new List<StorageData>();
+            foreach (var storageData in storageDatas)
+            {
+                if (storageData.StudioName == name)
+                {
+                    animeList.Add(storageData);
+                }
+            }
+            return animeList;
+        }
+
+        public async Task<IEnumerable<StorageData>> GetFullStorageDatas(string requestPath)
+        {
+            var record = await this.client.GetStreamAsync(requestPath);
+            using var streamReader = new StreamReader(record);
+            using var csvReader = new CsvReader(streamReader, CultureInfo.InvariantCulture);
+            return csvReader.GetRecords<StorageData>().ToList();
+        }
+
+        private static Anime ConvertToAnime(StorageData storageData) => new()
+        {
+            Name = storageData.Name,
+            Description = storageData.Description
+
+        };
     }
 
 

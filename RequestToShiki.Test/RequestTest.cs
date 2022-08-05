@@ -34,10 +34,8 @@ public class RequestTest
     [Theory]
     [InlineData("Kill la Kill")]
     [InlineData("sword")]
-    public async Task AnimesByNameExist()
+    public async Task AnimesByNameExist(string name)
     {
-        // arrange
-        var name = "Kill la Kill";
         // act
         var result = await this.request.AnimesByName(name);
         // assert

@@ -31,15 +31,15 @@ public class RequestTest
         Assert.Null(result);
     }
 
-    [Fact]
-    public async Task AnimesByNameExist()
+    [Theory]
+    [InlineData("Kill la Kill")]
+    [InlineData("sword")]
+    public async Task AnimesByNameExist(string name)
     {
-        // arrange
-        var name = "Kill la Kill";
         // act
         var result = await this.request.AnimesByName(name);
         // assert
-        Assert.Equal("Kill la Kill", result.Name);
+        Assert.NotNull(result);
     }
     [Fact]
     public async Task AnimesByNameNotExist()

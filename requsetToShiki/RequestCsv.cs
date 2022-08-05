@@ -37,8 +37,7 @@ namespace RequestToShiki
             {
                 Name = foundStudio[0].StudioName,
             };
-            var topAnimesCsv = foundStudio;
-            var topAnimes = topAnimesCsv.Select(ConvertToAnime).ToList();
+            var topAnimes = foundStudio.Select(ConvertToAnime).ToList();
             return new StudioWithTopAnime { Studio = studio, TopAnimes = topAnimes };
         }
         public async Task<StorageData> GetRecordByName(string requestPath, string name)

@@ -18,6 +18,7 @@ public class RequestTest
         var result = await this.request.StudioByName(name);
         // assert
         Assert.Equal(name, result.Studio.Name);
+        Assert.True(result.TopAnimes.Count > 2); // there are at least 2 popular anime from Trigger
     }
 
     [Fact]

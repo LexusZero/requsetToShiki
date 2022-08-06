@@ -22,14 +22,12 @@ namespace RequestToShiki
                 Name = storageDataAnime.Name,
                 Description = storageDataAnime.Description
             };
-
             return anime;
-
         }
         public async Task<StudioWithTopAnime> StudioByName(string name)
         {
             var foundStudio = await GetRecordByStudioName(Path, name);
-            if (foundStudio == null)
+            if (foundStudio.Count == 0)
             {
                 return null;
             }
@@ -40,7 +38,8 @@ namespace RequestToShiki
             var topAnimes = foundStudio.Select(ConvertToAnime).ToList();
             return new StudioWithTopAnime { Studio = studio, TopAnimes = topAnimes };
         }
-        public async Task<StorageData> GetRecordByName(string requestPath, string name)
+
+        private async Task<StorageData> GetRecordByName(string requestPath, string name)
         {
             var record = await this.client.GetStreamAsync(requestPath);
             using var streamReader = new StreamReader(record);
@@ -50,7 +49,8 @@ namespace RequestToShiki
                 name, StringComparison.OrdinalIgnoreCase));
             return foundAnime;
         }
-        public async Task<List<StorageData>> GetRecordByStudioName(string requestPath, string name)
+
+        private async Task<List<StorageData>> GetRecordByStudioName(string requestPath, string name)
         {
             var record = await this.client.GetStreamAsync(requestPath);
             using var streamReader = new StreamReader(record);
@@ -64,37 +64,7 @@ namespace RequestToShiki
                     storageDatas.Add(rec);
                 }
             }
-            if (storageDatas.Count != 0)
-            {
-                return storageDatas;
-            }
-
-            return null;
-        }
-
-        public List<StorageData> GetTopAnimesByStudio(IEnumerable<StorageData> storageDatas, string name)
-        {
-            var animeList = new List<StorageData>();
-
-            foreach (var storageData in storageDatas)
-            {
-
-                if (storageData.StudioName == name)
-                {
-                    animeList.Add(storageData);
-                }
-
-            }
-
-            return animeList;
-        }
-
-        public async Task<IEnumerable<StorageData>> GetFullStorageDatas(string requestPath)
-        {
-            var record = await this.client.GetStreamAsync(requestPath);
-            using var streamReader = new StreamReader(record);
-            using var csvReader = new CsvReader(streamReader, CultureInfo.InvariantCulture);
-            return csvReader.GetRecords<StorageData>().ToList();
+            return storageDatas;
         }
 
         private static Anime ConvertToAnime(StorageData storageData) => new()
@@ -103,8 +73,6 @@ namespace RequestToShiki
             Description = storageData.Description
         };
     }
-
-
 
     public class StorageData
     {

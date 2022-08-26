@@ -5,66 +5,78 @@ namespace RequestToShiki
 {
     public class GistCsvRequest : IRequest
     {
-        private const string Path = "/xill47/a1255ce9b6f7a3482405e7141fb5cf25/raw/95a2fbcc54385d6636e915afd2bee96e9422ca52/animes.csv";
-        private readonly HttpClient client = new() { BaseAddress = new Uri("https://gist.githubusercontent.com") };
-        // /xill47/a1255ce9b6f7a3482405e7141fb5cf25/raw/95a2fbcc54385d6636e915afd2bee96e9422ca52/animes.csv
+        private const string Path = "https://gist.githubusercontent.com/xill47/a1255ce9b6f7a3482405e7141fb5cf25/raw/95a2fbcc54385d6636e915afd2bee96e9422ca52/animes.csv";
+        private readonly HttpClient client = new();
+        private readonly Dictionary<string, Studio> studiosByName = new();
+        private readonly Dictionary<string, List<Anime>> animesByStudioName = new();
+        private readonly List<Anime> allAnimeList = new();
+        private bool initialized;
+
         public async Task<Anime> AnimesByName(string name)
         {
-            var storageDataAnime = await GetRecordByName(Path, name);
-
-            if (storageDataAnime == null)
+            if (!this.initialized)
             {
-                return null;
+                await Initialize();
+
             }
-
-            var anime = new Anime()
+            Anime foundAnime = null;
+            foreach (var anime in this.allAnimeList)
             {
-                Name = storageDataAnime.Name,
-                Description = storageDataAnime.Description
-            };
-            return anime;
+                if (anime.Name.Contains(name, StringComparison.OrdinalIgnoreCase))
+                {
+                    foundAnime = anime;
+                }
+            }
+            return foundAnime;
         }
         public async Task<StudioWithTopAnime> StudioByName(string name)
         {
-            var foundStudio = await GetRecordByStudioName(Path, name);
-            if (foundStudio.Count == 0)
+            if (!this.initialized)
+            {
+                await Initialize();
+            }
+            if (!this.studiosByName.ContainsKey(name))
             {
                 return null;
             }
-            var studio = new Studio()
+            var studio = this.studiosByName[name];
+            if (!this.animesByStudioName.ContainsKey(name))
             {
-                Name = foundStudio[0].StudioName,
-            };
-            var topAnimes = foundStudio.Select(ConvertToAnime).ToList();
+                return null;
+            }
+            var topAnimes = this.animesByStudioName[name];
             return new StudioWithTopAnime { Studio = studio, TopAnimes = topAnimes };
         }
-
-        private async Task<StorageData> GetRecordByName(string requestPath, string name)
+        private void InitializeStudios(StorageData record)
         {
-            var record = await this.client.GetStreamAsync(requestPath);
-            using var streamReader = new StreamReader(record);
-            using var csvReader = new CsvReader(streamReader, CultureInfo.InvariantCulture);
-            var records = csvReader.GetRecords<StorageData>();
-            var foundAnime = records.FirstOrDefault(record => record.Name.Contains(
-                name, StringComparison.OrdinalIgnoreCase));
-            return foundAnime;
+            this.studiosByName[record.StudioName] = new Studio() { Name = record.StudioName };
         }
 
-        private async Task<List<StorageData>> GetRecordByStudioName(string requestPath, string name)
+        private async Task Initialize()
         {
-            var record = await this.client.GetStreamAsync(requestPath);
+            var record = await this.client.GetStreamAsync(Path);
             using var streamReader = new StreamReader(record);
             using var csvReader = new CsvReader(streamReader, CultureInfo.InvariantCulture);
             var records = csvReader.GetRecords<StorageData>();
-            var storageDatas = new List<StorageData>();
             foreach (var rec in records)
             {
-                if (rec.StudioName.Contains(name, StringComparison.OrdinalIgnoreCase))
-                {
-                    storageDatas.Add(rec);
-                }
+                InitializeStudios(rec);
+                InitializeAnimesByStudioName(rec);
+                InitializeAllAnimeList(rec);
             }
-            return storageDatas;
+            this.initialized = true;
+        }
+
+        private void InitializeAllAnimeList(StorageData storageData) =>
+            this.allAnimeList.Add(ConvertToAnime(storageData));
+
+        private void InitializeAnimesByStudioName(StorageData record)
+        {
+            if (!this.animesByStudioName.ContainsKey(record.StudioName))
+            {
+                this.animesByStudioName.Add(record.StudioName, new List<Anime>());
+            }
+            this.animesByStudioName[record.StudioName].Add(ConvertToAnime(record));
         }
 
         private static Anime ConvertToAnime(StorageData storageData) => new()

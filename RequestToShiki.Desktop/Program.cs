@@ -1,6 +1,4 @@
-﻿using RequestToShiki.ShikimoriAPI;
-
-namespace RequestToShiki.Desktop
+﻿namespace RequestToShiki.Desktop
 
 {
     internal static class Program
@@ -12,7 +10,7 @@ namespace RequestToShiki.Desktop
         private static void Main()
         {
             ApplicationConfiguration.Initialize();
-            var request = new ShikimoriRequest();
+            var request = new GistCsvRequest();
             var view = new LookupWindow();
             var controller = new LookupController(view, request);
             view.LookupTriggered += async (sender, args) => await controller.LookupByName();

@@ -35,16 +35,25 @@ namespace RequestToShiki
             {
                 await Initialize();
             }
-            if (!this.studiosByName.ContainsKey(name))
+            string studioKey = null;
+            foreach (var key in this.studiosByName.Keys)
+            {
+                if (key.Equals(name, StringComparison.OrdinalIgnoreCase))
+                {
+                    studioKey = key;
+                }
+            }
+            if (studioKey == null)
             {
                 return null;
             }
-            var studio = this.studiosByName[name];
-            if (!this.animesByStudioName.ContainsKey(name))
+            var studio = this.studiosByName[studioKey];
+
+            if (!this.animesByStudioName.ContainsKey(studioKey))
             {
                 return null;
             }
-            var topAnimes = this.animesByStudioName[name];
+            var topAnimes = this.animesByStudioName[studioKey];
             return new StudioWithTopAnime { Studio = studio, TopAnimes = topAnimes };
         }
         private void InitializeStudios(StorageData record)

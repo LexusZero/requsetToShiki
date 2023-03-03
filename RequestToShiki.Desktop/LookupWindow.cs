@@ -1,11 +1,18 @@
-﻿namespace RequestToShiki.Desktop;
+﻿using RequestToShiki.ShikimoriAPI;
+
+namespace RequestToShiki.Desktop;
 
 public partial class LookupWindow : Form, IView
 {
+    public LookupController LookupController { get; set; }
+
     public event EventHandler LookupTriggered;
     public LookupWindow()
     {
         InitializeComponent();
+        this.comboBox1.Items.Add("RequestToShiki");
+        this.comboBox1.Items.Add("RequestToGist");
+        this.comboBox1.SelectedIndex = 0;
     }
 
     public void NotFound()
@@ -31,16 +38,11 @@ public partial class LookupWindow : Form, IView
         this.output.Text = $"Название - {studioWithTopAnime.Studio.Name}";
         var count = 0;
 
-        foreach (Anime? anime in studioWithTopAnime.TopAnimes)
+        foreach (var anime in studioWithTopAnime.TopAnimes)
         {
             count++;
             this.output.Text += ($"\nАниме номер {count} " + anime.Name);
         }
-    }
-
-    private void Form1_Load(object sender, EventArgs e)
-    {
-
     }
 
     private void lookupButton_Click(object sender, EventArgs e)
@@ -48,4 +50,26 @@ public partial class LookupWindow : Form, IView
         LookupTriggered?.Invoke(this, EventArgs.Empty);
     }
 
+    private void input_KeyDown(object sender, KeyEventArgs e)
+    {
+        if (e.KeyCode == Keys.Enter)
+        {
+            e.SuppressKeyPress = true;
+            e.Handled = true;
+            LookupTriggered?.Invoke(this, EventArgs.Empty);
+        }
+    }
+
+    private void comboBox1_SelectedIndexChanged(object sender, EventArgs e)
+    {
+        if (this.comboBox1.SelectedIndex == 0)
+        {
+            var shikimoriRequest = new ShikimoriRequest();
+            LookupController.Request = shikimoriRequest;
+        }
+        if (this.comboBox1.SelectedIndex == 1)
+        {
+            LookupController.Request = new GistCsvRequest();
+        }
+    }
 }
